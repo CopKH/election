@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗳️ เลือกตั้งล่วงหน้า — หาที่ไปใช้สิทธิ์ให้สะดวกที่สุด
 
-## Getting Started
+> เพราะ “การไปเลือกตั้ง” ไม่ควรยากกว่าที่จำเป็น
 
-First, run the development server:
+โปรเจกต์นี้ถูกสร้างขึ้นเพื่อช่วยให้ประชาชน  
+**ค้นหาสถานที่เลือกตั้งล่วงหน้าในกรุงเทพมหานครได้ง่าย รวดเร็ว และชัดเจน**  
+พร้อมข้อมูลการเดินทางจริงที่สามารถไปถึงได้ภายในเวลาที่เหมาะสม
+
+---
+
+## ✨ แนวคิดของโปรเจกต์ (Concept)
+
+- รวม **สถานที่เลือกตั้งล่วงหน้าทั้ง 33 เขตของกรุงเทพฯ**
+- แสดงข้อมูลแบบ **แยกตามเขตเลือกตั้ง** อย่างเป็นระบบ
+- ระบุ **การเดินทางที่ใกล้จริง**  
+  (รถไฟฟ้า / BRT / รถเมล์ — ไม่เดา ไม่มั่ว)
+- ลดอุปสรรคเล็ก ๆ ที่ทำให้คน “ไม่ไปเลือกตั้ง”
+
+> อำนาจของคุณ เริ่มต้นจากการรู้ว่า  
+> **จะไปใช้สิทธิ์ที่ไหน และไปยังไง**
+
+---
+
+## 🧭 สิ่งที่เว็บนี้ทำได้
+
+- 🔍 ค้นหาสถานที่เลือกตั้งล่วงหน้า
+- 🗂️ ดูรายการสถานที่ **แยกตามเขตเลือกตั้ง**
+- 🚆 ดูการเดินทางที่ใกล้ที่สุด (เดินได้จริง ~20 นาที)
+- 🗺️ ดูรายละเอียด + แผนที่ (ในหน้า detail)
+
+> เว็บนี้ **ไม่ใช่เว็บข่าว**  
+> แต่คือเครื่องมือที่ตั้งใจให้ “ใช้ได้จริง”
+
+---
+
+## 🧱 Tech Stack
+
+- **Next.js (App Router)**
+- **TypeScript**
+- **Tailwind CSS**
+- **Supabase**  
+  - PostgreSQL (Database)
+  - Storage / API
+- Deployed on **Vercel**
+
+---
+
+## 🚀 Getting Started (สำหรับนักพัฒนา)
+
+ติดตั้ง dependency และรัน dev server
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
