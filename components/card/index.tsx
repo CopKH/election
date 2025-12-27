@@ -1,7 +1,5 @@
 "use client";
-import React from "react";
-import { TrainFront, Bus, Bike, MapPin, Navigation } from "lucide-react";
-import Link from "next/link";
+import { TrainFront, Bus, MapPin, TramFront, PlaneTakeoff } from "lucide-react";
 import { PollingPlace } from "@/models/Place";
 
 interface Props {
@@ -14,14 +12,18 @@ type LocationCardProps = {
 
 const LocationCard = ({ data }: LocationCardProps) => {
   const getTransportIcon = (type: string) => {
-    console.log("type", type);
+    const baseClass = "w-4 h-4";
     switch (type) {
       case "MRT":
-        return <TrainFront className="w-4 h-4 text-blue-600" />;
+        return <TrainFront className={`${baseClass} text-blue-600`} />;
       case "BTS":
-        return <TrainFront className="w-4 h-4 text-emerald-600" />;
+        return <TrainFront className={`${baseClass} text-emerald-600`} />;
       case "SRT":
-        return <TrainFront className="w-4 h-4 text-red-800" />;
+        return <TrainFront className={`${baseClass} text-red-800`} />;
+      case "BRT":
+        return <TramFront className={`${baseClass} text-emerald-600`} />;
+      case "ARL":
+        return <TrainFront className={`${baseClass} text-red-600`} />;
       case "BUS":
         return <Bus className="w-4 h-4 text-red-600" />;
       default:
