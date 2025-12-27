@@ -32,15 +32,6 @@ const LocationCard = ({ data }: LocationCardProps) => {
   };
   return (
     <div className="group h-full flex flex-col bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
-      {/* รูป */}
-      <div className="relative h-48 w-full overflow-hidden">
-        <img
-          src={data.image ?? "/placeholder.jpg"}
-          alt={data.name}
-          className="w-full h-full group-hover:scale-110 transition-transform duration-500 object-cover"
-        />
-      </div>
-
       {/* 🔥 เนื้อหา (กินพื้นที่ว่าง) */}
       <div className="p-5 flex flex-col flex-1">
         <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
