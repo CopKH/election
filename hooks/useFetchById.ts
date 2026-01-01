@@ -9,10 +9,6 @@ export const getPlaceById = async (id: number) => {
       address,
       latitude,
       longitude,
-      election_areas (
-        id,
-        name
-      ),
       polling_place_transports (
         type,
         label
@@ -20,7 +16,7 @@ export const getPlaceById = async (id: number) => {
     `)
     .eq("id", id)
     .single();
-
+console.log('data fetch',data)
   if (error || !data) {
     console.error(error);
     return null;
@@ -32,7 +28,6 @@ export const getPlaceById = async (id: number) => {
     address: data.address,
     latitude: data.latitude ?? null,
     longitude: data.longitude ?? null,
-    electionArea: data.election_areas?.name ?? "",
     transports: data.polling_place_transports ?? [],
   };
 };
