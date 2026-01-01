@@ -1,96 +1,115 @@
-"use client";
-import React, { use } from 'react';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { ChevronLeft, MapPin, Navigation, TrainFront, Bus, Bike } from 'lucide-react';
+import { notFound } from "next/navigation";
+import { ArrowLeft, ExternalLink, Link, MapPin } from "lucide-react";
+import { getPlaceById } from "@/hooks/useFetchById";
+import PlaceMap from "@/components/free-map";
 
-// โหลดคอมโพเนนต์แผนที่แบบ Client-side Only
-const Map = dynamic(() => import('../../../components/free-map'), { 
-  ssr: false,
-  loading: () => <div className="h-full w-full bg-gray-100 animate-pulse flex items-center justify-center">กำลังโหลดแผนที่...</div>
-});
 
-export default function DetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-  // ข้อมูลตัวอย่าง (ในโปรเจกต์จริงดึงจาก Database)
-  const data = {
-    id: id,
-    name: "สำนักงานเขตสาทร",
-    image: `picsum.photos{id}/1000/600`,
-    lat: 13.7181,
-    lng: 100.5150,
-    address: "123 ถนนสุขุมวิท เขตวัฒนา กรุงเทพฯ 10110",
-    transports: [
-      { type: 'bts', label: 'BTS อโศก (เดิน 5 นาที)' },
-      { type: 'mrt', label: 'MRT สุขุมวิท' },
-      { type: 'win', label: 'วินหน้าปากซอย' }
-    ]
-  };
+
+
+export default async function PlaceDetailPage({ params }: Props) {
+   const { id } = await params;
+  const place = await getPlaceById(Number(id));
+  if (!place) return notFound();
+  const hasLocation = place.latitude && place.longitude;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top Header */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-4">
-          <Link href="/home" className="p-2 hover:bg-gray-100 rounded-full transition-all">
-            <ChevronLeft className="w-6 h-6" />
-          </Link>
-          <h1 className="font-bold text-lg truncate">{data.name}</h1>
+        <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        {/* Back */}
+        <Link
+          href="/home"
+          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 mb-6"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          กลับไปหน้ารายการ
+        </Link>
+
+        {/* Header */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            {place.name}
+          </h1>
+
+          <p className="text-sm text-gray-500 mb-4">
+            {place.electionArea}
+          </p>
+
+          <div className="flex items-start gap-2 text-gray-600 mb-6">
+            <MapPin className="w-5 h-5 mt-0.5" />
+            <p>{place.address}</p>
+          </div>
         </div>
-      </header>
 
-      <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
-          
-          {/* ข้อมูลสถานที่ (ฝั่งซ้าย) */}
-          <div className="space-y-6">
-            <div className="rounded-[2.5rem] overflow-hidden shadow-xl aspect-video">
-              <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-            </div>
+        {/* Transport */}
+        {place.transports.length > 0 && (
+          <div className="mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">
+              การเดินทางสาธารณะ
+            </h2>
 
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm space-y-6">
-              <div>
-                <h2 className="text-3xl font-black text-gray-900 mb-2">{data.name}</h2>
-                <p className="flex items-center gap-2 text-gray-500">
-                  <MapPin className="w-5 h-5 text-red-500" />
-                  {data.address}
-                </p>
-              </div>
-
-              {/* ส่วนการเดินทาง (Icons) */}
-              <div className="pt-6 border-t border-gray-100">
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">การเดินทางใกล้เคียง</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {data.transports.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl">
-                      {item.type === 'bts' && <TrainFront className="w-5 h-5 text-emerald-600" />}
-                      {item.type === 'bus' && <Bus className="w-5 h-5 text-blue-600" />}
-                      {item.type === 'win' && <Bike className="w-5 h-5 text-orange-500" />}
-                      <span className="text-sm font-medium text-black">{item.label}</span>
-                    </div>
-                  ))}
+            <div className="flex flex-wrap gap-3">
+              {place.transports.map((t, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 text-sm text-gray-700"
+                >
+                  {t.label}
                 </div>
-              </div>
-
-              <a 
-                href={`www.google.com{data.lat},${data.lng}`}
-                target="_blank"
-                className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
-              >
-                <Navigation className="w-5 h-5" />
-                นำทางด้วย Google Maps
-              </a>
+              ))}
             </div>
           </div>
+        )}
 
-          {/* ส่วนแผนที่ Leaflet (ฝั่งขวา) */}
-          <div className="h-[500px] lg:h-full min-h-[500px] sticky top-24 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white">
-            <Map lat={data.lat} lng={data.lng} name={data.name} />
-          </div>
+        {/* แผนที่ */}
+       {hasLocation ?  <>
+        <div className="mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+  <h2 className="text-lg font-bold text-gray-900 mb-4">
+    แผนที่สถานที่เลือกตั้ง
+  </h2>
 
+  <PlaceMap
+    lat={place.latitude}
+    lng={place.longitude}
+    name={place.name}
+  />
+
+  <a
+    href={`https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-4 inline-flex items-center justify-center w-full gap-2 rounded-xl border border-gray-200 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+  >
+    เปิดนำทางใน Google Maps
+  </a>
+</div>
+
+
+        {/* CTA */}
+        <div className="mt-10 text-center">
+          <a
+            href="https://www.bora.dopa.go.th"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg hover:bg-blue-700 transition"
+          >
+            ไปลงทะเบียนเลือกตั้งล่วงหน้า (เว็บไซต์ทางการ)
+            <ExternalLink className="w-4 h-4" />
+          </a>
         </div>
-      </main>
+        </> : <div className="mt-8 flex flex-col items-center justify-center h-[280px] rounded-2xl border border-dashed border-gray-300 bg-gray-50 text-center px-6">
+    <MapPin className="w-8 h-8 text-gray-400 mb-3" />
+    <p className="text-sm font-medium text-gray-700">
+      แผนที่กำลังอยู่ระหว่างการอัปเดต
+    </p>
+    <p className="mt-1 text-xs text-gray-500">
+      จะเพิ่มพิกัดสถานที่นี้ในเร็ว ๆ นี้
+    </p>
+  </div>}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
-import { TrainFront, Bus, MapPin, TramFront, PlaneTakeoff } from "lucide-react";
+import { TrainFront, Bus, MapPin, TramFront } from "lucide-react";
 import { PollingPlace } from "@/models/Place";
+import Link from "next/link";
 
 interface Props {
   places: PollingPlace[];
@@ -66,15 +67,26 @@ const LocationCard = ({ data }: LocationCardProps) => {
           </div>
         )}
 
-        {/* 🔥 ปุ่มติดก้นการ์ด */}
-        {/* <div className="mt-auto pt-5">
-          <Link href={`/detail/22`} className="block">
-            <button className="w-full bg-gray-900 text-white py-3 rounded-2xl font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
-              <Navigation className="w-4 h-4" />
+        {/* CTA ด้านล่าง */}
+        <div className="mt-auto pt-5 hover:border-blue-300 hover:text-blue-600">
+          <Link href={`/detail/${data.id}`}>
+            <button
+              className="
+          w-full
+          py-2.5
+          text-sm
+          rounded-xl
+          border
+          border-gray-200
+          text-gray-700
+          hover:bg-gray-50
+          transition
+        "
+            >
               ดูรายละเอียดและแผนที่
             </button>
           </Link>
-        </div> */}
+        </div>
       </div>
     </div>
   );

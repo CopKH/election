@@ -1,47 +1,44 @@
+// components/PlaceMap.tsx
 "use client";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
-import 'leaflet-routing-machine'
-import { useEffect } from 'react';
 
-// แก้ไข Bug ไอคอน Marker ไม่แสดงใน Next.js
-const customIcon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  shadowUrl: "unpkg.com",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+// fix icon หาย (Leaflet classic bug)
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-interface FreeMapProps {
+interface Props {
   lat: number;
   lng: number;
   name: string;
 }
 
-
-L.Marker.prototype.options.icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-});
-
-
-
-export default function FreeMap({ lat, lng, name }: FreeMapProps) {
-
+export default function PlaceMap({ lat, lng, name }: Props) {
   return (
-    <MapContainer 
-      center={[lat, lng]} 
-      zoom={16} 
-      className="h-full w-full"
-    >
-      <TileLayer
-        attribution='&copy; <a href="www.openstreetmap.org">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker position={[lat, lng]} icon={customIcon}>
-        <Popup>{name}</Popup>
-      </Marker>
-    </MapContainer>
+    <div className="w-full h-[360px] rounded-2xl overflow-hidden border border-gray-100">
+      <MapContainer
+        center={[lat, lng]}
+        zoom={15}
+        scrollWheelZoom={false}
+        className="w-full h-full"
+      >
+        <TileLayer
+          attribution="&copy; OpenStreetMap"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={[lat, lng]}>
+          <Popup>{name}</Popup>
+        </Marker>
+      </MapContainer>
+    </div>
   );
 }

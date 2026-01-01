@@ -26,7 +26,7 @@ export const useFetchPlaces = () => {
       )
     )
   `);
-
+console.log('data',data)
         if (data) {
           const areas: ElectionArea[] = data.map((row) => ({
   id: row.id,

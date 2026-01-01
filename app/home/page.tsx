@@ -3,6 +3,7 @@
 import { Loader, MapPin } from "lucide-react"; // ลงเพิ่ม: npm install lucide-react
 import CardLocationList from "../../components/card";
 import { useHomeViewModel } from "./homeViewModel";
+import CardLocationListSkeleton from "@/components/card-skeleton";
 
 export default function Home() {
   const { keyword, setKeyword, dataPlaces, loading } = useHomeViewModel();
@@ -55,15 +56,26 @@ export default function Home() {
               />
             </div>
           </div>
+          <div className="mt-6 text-white/80 text-sm">
+  ต้องการใช้สิทธิเลือกตั้งล่วงหน้า?{' '}
+  <a
+    href="https://boraservices.bora.dopa.go.th/election/popout/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="underline underline-offset-4 hover:text-white"
+  >
+    ลงทะเบียนผ่านเว็บไซต์ทางการ
+  </a>
+</div>
+
         </div>
       </section>
 
       {/* ================= CONTENT ================= */}
       <section className="-mt-24 bg-gray-50 rounded-t-[56px] pt-32">
         <div className="max-w-7xl mx-auto px-6 pb-16">
-          {loading && <Loader />}
-
-          {!loading && dataPlaces.length > 0 ? (
+          {loading ? <CardLocationListSkeleton count={3} /> : 
+          dataPlaces.length > 0 ? (
             dataPlaces?.map((area) => (
               <section key={area.id} className="mb-16">
                 <h2 className="mb-8 text-2xl md:text-3xl font-bold text-slate-900 flex items-center gap-3">
